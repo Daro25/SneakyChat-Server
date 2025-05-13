@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario Profesional</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #CDC1FF;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .form-container {
+      background-color: #ffffff;
+      border-radius: 30px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .btn-delete {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .delete-confirmation {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .delete-confirmation p {
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .btn-confirm {
+      background-color: #7E60BF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 20px;
+      }
+
+      .btn-delete,
+      .btn-confirm {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>¿Realmente deceas eliminar tu cuenta?</h2>
+    <form id="main-form" action="deleteUser.php" method="POST">
+      <div class="form-group">
+        <label for="username">Nombre de Usuario</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirmar Contraseña</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Edad</label>
+        <input type="number" id="age" name="age" min="0" required>
+      </div>
+
+      <button type="button" class="btn-delete" onclick="mostrarConfirmacion()">Eliminar Cuenta</button>
+
+      <div class="delete-confirmation" id="confirm-section">
+        <p>¿Confirmas la eliminación total de tu cuenta?</p>
+        <button type="submit" class="btn-confirm">Sí</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function mostrarConfirmacion() {
+      document.getElementById('confirm-section').style.display = 'block';
+    }
+    document.getElementById('confirm-password').addEventListener('change', function() {
+      alert('Las constraseñas no coinciden');
+      document.getElementById('confirm-password').value= '';
+    });
+  </script>
+</body>
+</html>
