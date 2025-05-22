@@ -1,0 +1,133 @@
+:root {
+      --primary: #FFD700;
+      --secondary: #10182b;
+      --accent: #6C5CE7;
+      --text-light: #ffffff;
+      --text-dark: #1a1a1a;
+      --footer-bg: #000000;
+    }
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: var(--secondary);
+      color: var(--text-dark);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      border-radius: 0px 0px 30% 30%;
+      background-color: var(--secondary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      margin-bottom: 20px;
+    }
+
+    header.shrink {
+      flex-direction: row;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+
+    header img {
+      height: 64px;
+      width: 64px;
+      margin: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    header.shrink img {
+      height: 40px;
+      width: 40px;
+    }
+
+    header h1 {
+      color: var(--text-light);
+      margin: 0.5rem;
+      font-size: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    header.shrink h1 {
+      font-size: 1.5rem;
+    }
+
+    main {
+        margin-top: 20px;
+      padding: 2rem;
+      background-color: var(--text-light);
+    }
+
+    section.intro {
+      text-align: justify;
+      margin-bottom: 3rem;
+    }
+
+    section.apps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+
+    .app-card {
+      width: 200px;
+      background-color: var(--accent);
+      color: var(--text-light);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      text-align: center;
+      justify-content: center;
+      align-content: center;
+    }
+
+    .app-card img {
+      max-width: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .app-card p {
+      text-align: justify;
+    }
+
+    footer {
+      background-color: var(--footer-bg);
+      color: var(--text-light);
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .social {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .social-item img {
+      height: 24px;
+      width: 24px;
+      border: #ffffff 2px solid;
+      background-color: #ffffff;
+      border-radius: 50%;
+    }
+
+    @media (max-width: 600px) {
+      header.shrink {
+        flex-direction: column;
+      }
+    }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ljusstudie</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="main-header">
+    <img src="icono.png" alt="Ljusstudie Logo">
+    <h1>Ljusstudie</h1>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Visión</h2>
+      <p>
+        En Ljusstudie aspiramos a ser una empresa global que redefine la innovación tecnológica mediante el desarrollo de soluciones creativas y videojuegos entretenidos. Nos comprometemos con la excelencia, la imaginación y el impacto positivo en las experiencias digitales del mundo.
+      </p>
+    </section>
+
+    <section class="apps">
+      <div class="app-card">
+        <img src="sneakychat_icon.png" alt="Sneaky Chat Icon">
+        <h3>Sneaky Chat</h3>
+        <p>
+          Una app de mensajería privada escondida dentro de un bloc de notas. Seguridad, discreción y estilo en un solo lugar. Comunícate como nunca antes.
+        </p>
+        <a href="#" style="color: var(--primary); text-decoration: none;">Descargar</a>
+      </div>
+      <!-- Puedes duplicar bloques como este para más apps -->
+    </section>
+  </main>
+
+  <footer>
+    <div class="social">
+      <div class="social-item">
+        <img src="tiktok.png" alt="Tiktok">
+        <span>/ljusstudie</span>
+      </div>
+      <div class="social-item">
+        <img src="facebook.png" alt="Facebook">
+        <span>@ljusstudie</span>
+      </div>
+      <div class="social-item">
+        <img src="instagram.png" alt="Instagram">
+        <span>@ljusstudie</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('main-header');
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        header.classList.add('shrink');
+      } else {
+        header.classList.remove('shrink');
+      }
+    });
+  </script>
+</body>
+</html>
