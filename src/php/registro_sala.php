@@ -29,6 +29,7 @@ if ($conex->connect_error) {
 $contra_sala = $_GET['Contra_Sala']; 
 $nom_sala = $_GET['Nom_Sala']; 
 $cupo = (int)$_GET['Cupo']; // Asegúrate de convertir a entero
+$keyHash = password_hash($contra_sala, PASSWORD_DEFAULT);
 
 // Validar los campos
 if (empty($contra_sala) || empty($nom_sala) || !is_int($cupo)) {
@@ -37,7 +38,7 @@ if (empty($contra_sala) || empty($nom_sala) || !is_int($cupo)) {
 }
 
 $stmt = $conex->prepare("INSERT INTO sala (Contra_Sala, Nom_Sala, Cupo) VALUES (?, ?, ?)");
-$stmt->bind_param("ssi", $contra_sala, $nom_sala, $cupo);
+$stmt->bind_param("ssi", $keyHash, $nom_sala, $cupo);
 
 if ($stmt->execute()) {
     $id = $conex->insert_id;

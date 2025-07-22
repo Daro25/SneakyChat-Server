@@ -17,16 +17,28 @@ if($conex) {
     if ($nombre && strlen($nombre) <= 20 && $pass && strlen($pass) <= 20 && $edad !== false)
     {
         // Uso de sentencias preparadas
-        $stmt = $conex->prepare("DELETE FROM usuario WHERE Contra = ? AND Nomb = ? AND Edad = ?");
-        $stmt->bind_param("ssi", $pass, $nombre, $edad);
+        $stmt = $conex->prepare("SELECT Contra FROM usuario WHERE Nomb = ?");
+        $stmt->bind_param("s",  $nombre);
         $stmt->execute();
-        
-        // Verificar si se eliminó alguna fila
-            if ($stmt->affected_rows > 0) {
-                echo 'Hola desconocido, tu quien eres? [Fuiste eliminado del sistema].';
-            } else {
-                echo 'Ups! No logramos encontrar dicho usuario.';
-            }
+        $result = $stmt->get_result();
+        $hash = '';
+        while ($li = $result->fetch_assoc()) {
+            $hash = $li['Contra'];
+        }
+        if (password_verify($pass, $hash)){
+            $stmt = $conex->prepare("DELETE FROM usuario WHERE Nomb = ? AND Edad = ?");
+            $stmt->bind_param("si", $nombre, $edad);
+            $stmt->execute();
+            
+            // Verificar si se eliminó alguna fila
+                if ($stmt->affected_rows > 0) {
+                    echo 'Hola desconocido, tu quien eres? [Fuiste eliminado del sistema].';
+                } else {
+                    echo 'Ups! No logramos encontrar dicho usuario.';
+                }
+        } else {
+            echo 'Creo que esa no era la contraseña o el usuario correcto, vuelve a intentarlo.';
+        }
     } else echo '👀 Como que reciví unos parametros medio raros, vuelve intentarlo pero deja de hacer cosas raras.';
     // Cerrar conexión
     mysqli_close($conex);

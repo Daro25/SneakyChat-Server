@@ -29,6 +29,7 @@ $contra = $_GET['contra'];
 $sala_id = (int)$_GET['sala_id']; // Asegúrate de convertir a entero
 $edad = (int)$_GET['edad']; // Asegúrate de convertir a entero
 $key = $_GET['key'];
+$keyHash = password_hash($key, PASSWORD_DEFAULT);
 
 // Validar los campos
 if (empty($nomb) || empty($contra) || empty($key) || !is_int($sala_id) || !is_int($edad)) {
@@ -38,7 +39,7 @@ if (empty($nomb) || empty($contra) || empty($key) || !is_int($sala_id) || !is_in
 
 // Preparar la consulta SQL
 $stmt = $conex->prepare("INSERT INTO usuario (nomb, contra, sala_id, Edad, keyPublic) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("ssiss", $nomb, $contra, $sala_id, $edad, $key); // 'ssiss' indica tipos de datos: string, string, integer, integer, string
+$stmt->bind_param("ssiss", $nomb, $contra, $sala_id, $edad, $keyHash); // 'ssiss' indica tipos de datos: string, string, integer, integer, string
 
 if ($stmt->execute()) {
     $id = $conex->insert_id;

@@ -29,23 +29,34 @@ if($conex) {
     $pass = filter_input(INPUT_GET, 'pass', FILTER_SANITIZE_STRING);
 
     // Uso de sentencias preparadas
-    $stmt = $conex->prepare("SELECT Id_User, Nomb, keyPublic FROM usuario WHERE Contra = ? AND Nomb = ?");
-    $stmt->bind_param("ss", $pass, $nombre);
+    $stmt = $conex->prepare("SELECT Contra FROM usuario WHERE Nomb = ?");
+    $stmt->bind_param("s",  $nombre);
     $stmt->execute();
-    
-    // Obtener resultados
     $result = $stmt->get_result();
-    $tablasArray = [];
-    
+    $hash = '';
     while ($li = $result->fetch_assoc()) {
-        $Id_User = $li['Id_User'];
-        $Nomb = $li['Nomb']; 
-        $keyPublic = $li['keyPublic'];
-        $tablasArray[] = new Tabla($Id_User, $Nomb, $keyPublic);
+        $hash = $li['Contra'];
     }
+    if (password_verify($pass, $hash)){
+        $stmt = $conex->prepare("SELECT Id_User, Nomb, keyPublic FROM usuario WHERE Nomb = ?");
+        $stmt->bind_param("s", $nombre);
+        $stmt->execute();
+        
+        // Obtener resultados
+        $result = $stmt->get_result();
+        $tablasArray = [];
+        
+        while ($li = $result->fetch_assoc()) {
+            $Id_User = $li['Id_User'];
+            $Nomb = $li['Nomb']; 
+            $keyPublic = $li['keyPublic'];
+            $tablasArray[] = new Tabla($Id_User, $Nomb, $keyPublic);
+        }
 
-    echo json_encode($tablasArray);
-    
+        echo json_encode($tablasArray);
+    } else {
+        echo json_encode(['error'=> 'La contraseña fue incorrecta.']);
+    }
     // Cerrar conexión
     mysqli_close($conex);
 } else {
