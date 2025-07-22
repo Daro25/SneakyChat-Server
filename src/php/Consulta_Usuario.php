@@ -37,7 +37,18 @@ if($conex) {
     while ($li = $result->fetch_assoc()) {
         $hash = $li['Contra'];
     }
-    if (password_verify($pass, $hash)){
+    function esHash($str) {
+        return preg_match('/^\$2[aby]\$\d{2}\$[\.\/A-Za-z0-9]{53}$/', $str);
+    }
+    $is_hash = esHash($hash);
+    if (!$is_hash && $pass == $hash) {
+            $hash = password_hash($pass, PASSWORD_DEFAULT);
+            $stmt = $conex->prepare("UPDATE usuario SET Contra = ? WHERE Nomb = ?");
+            $stmt->bind_param("ss", $hash, $nombre);
+            $stmt->execute();
+            $is_hash = true;
+    }
+    if ($is_hash && password_verify($pass, $hash)){
         $stmt = $conex->prepare("SELECT Id_User, Nomb, keyPublic FROM usuario WHERE Nomb = ?");
         $stmt->bind_param("s", $nombre);
         $stmt->execute();
