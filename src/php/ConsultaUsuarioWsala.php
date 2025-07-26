@@ -26,23 +26,27 @@ $conex = mysqli_connect($server, $user, $password, $database);
 if($conex) {
     // Saneamiento y validación
     $id_sala = filter_input(INPUT_GET, 'id_sala', FILTER_SANITIZE_STRING);
-
-    // Uso de sentencias preparadas
-    $stmt = $conex->prepare("SELECT Id_User, Nomb, keyPublic FROM usuario WHERE Sala_Id = ?");
+    $tablasArray = [];
+    $stmt = $conex->prepare("SELECT Id_Usuario FROM `sala_usuario` WHERE Id_Sala = ?");
     $stmt->bind_param("i", $id_sala);
     $stmt->execute();
-    
-    // Obtener resultados
-    $result = $stmt->get_result();
-    $tablasArray = [];
-    
-    while ($li = $result->fetch_assoc()) {
-        $Id_User = $li['Id_User'];
-        $Nomb = $li['Nomb']; 
-        $keyPublic = $li['keyPublic'];
-        $tablasArray[] = new Tabla($Id_User, $Nomb, $keyPublic);
+    $result1 = $stmt->get_result();
+    while ($id = $result1->fetch_assoc()){
+        // Uso de sentencias preparadas
+        $stmt = $conex->prepare("SELECT Id_User, Nomb, keyPublic FROM usuario WHERE Id_User = ?");
+        $stmt->bind_param("i", $id['Id_Usuario']);
+        $stmt->execute();
+        
+        // Obtener resultados
+        $result2 = $stmt->get_result();
+        
+        while ($li = $result2->fetch_assoc()) {
+            $Id_User = $li['Id_User'];
+            $Nomb = $li['Nomb']; 
+            $keyPublic = $li['keyPublic'];
+            $tablasArray[] = new Tabla($Id_User, $Nomb, $keyPublic);
+        }
     }
-
     echo json_encode($tablasArray);
     
     // Cerrar conexión

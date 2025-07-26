@@ -38,11 +38,14 @@ if (empty($nomb) || empty($contra) || empty($key) || !is_int($sala_id) || !is_in
 }
 
 // Preparar la consulta SQL
-$stmt = $conex->prepare("INSERT INTO usuario (nomb, contra, sala_id, Edad, keyPublic) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("ssiss", $nomb, $contra, $sala_id, $edad, $keyHash); // 'ssiss' indica tipos de datos: string, string, integer, integer, string
+$stmt = $conex->prepare("INSERT INTO usuario (nomb, contra, Edad, keyPublic) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("ssss", $nomb, $contra, $edad, $keyHash); // 'ssiss' indica tipos de datos: string, string, integer, integer, string
 
 if ($stmt->execute()) {
     $id = $conex->insert_id;
+    $stmt = $conex->prepare('INSERT INTO `sala-usuario` (Id_Sala, Id_Usuario) VALUES (?,?)');
+    $stmt->bind_param('i,i', $sala_id, $id);
+    $stmt->execute();
     echo json_encode(['ID' => $id]);
 } else {
     echo json_encode(['resultado' => "Error al insertar el registro: " . $stmt->error]);
