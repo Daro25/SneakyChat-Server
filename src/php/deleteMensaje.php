@@ -15,7 +15,7 @@ if($conex) {
 
     if ($mensajeId != false) {
         
-        $stmt = $conex->prepare("DELETE FROM mensaje WHERE Id = ?");
+        $stmt = $conex->prepare("DELETE FROM mensaje WHERE id = ?");
         $stmt->bind_param("i", $mensajeId);
         $stmt->execute();
 
