@@ -13,7 +13,7 @@ if($conex) {
     
     $mensajeId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
-    if (is_numeric($mensajeId)) {
+    if ($mensajeId !== false && $mensajeId !== null) {
         
         $stmt = $conex->prepare("DELETE FROM mensaje WHERE Id = ?");
         $stmt->bind_param("i", $mensajeId);
