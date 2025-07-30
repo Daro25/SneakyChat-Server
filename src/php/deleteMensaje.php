@@ -11,9 +11,9 @@ $conex = mysqli_connect($server, $user, $password, $database);
 
 if($conex) {
     
-    $mensajeId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+    $mensajeId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT)||0;
 
-    if ($mensajeId !== false && $mensajeId !== null) {
+    if ($mensajeId !== 0) {
         
         $stmt = $conex->prepare("DELETE FROM mensaje WHERE Id = ?");
         $stmt->bind_param("i", $mensajeId);
