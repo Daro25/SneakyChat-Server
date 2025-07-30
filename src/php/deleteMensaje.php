@@ -22,7 +22,7 @@ if($conex) {
         if ($stmt->affected_rows > 0) {
             echo 'El mensaje fue eliminado exitosamente.';
         } else {
-            echo 'No se encontró ningún mensaje.';
+            echo 'No se encontró ningún mensaje.'+$mensajeId;
         }
 
         $stmt->close();
