@@ -77,7 +77,33 @@
       text-align: center;
       width: 100%;
     }
-
+    section.error{
+      text-align: center;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: rgb(253, 100, 100);
+      color: var(--text-light);
+      border-radius: 0.5rem;
+      align-items: center;
+      text-align: center;
+      align-content: center;
+      align-self: center;
+    }
+    li > code{
+      background-color: #747474;
+      padding: 2px;
+      border-radius: 3px;
+    }
+    section>ol{
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    section>ol>img{
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      margin: 1rem 0;
+    }
     section.apps:has( > *:only-child){
       width: 100%;
     }
