@@ -27,7 +27,8 @@ if($conex) {
     // Saneamiento y validación
     $nombre = filter_input(INPUT_GET, 'nombre', FILTER_SANITIZE_STRING);
     $pass = filter_input(INPUT_GET, 'pass', FILTER_SANITIZE_STRING);
-    if ($nombre && $pass){// Uso de sentencias preparadas
+    if ($nombre && $pass){
+        // Uso de sentencias preparadas
         $stmt = $conex->prepare("SELECT Contra FROM usuario WHERE Nomb = ?");
         $stmt->bind_param("s", $nombre);
         $stmt->execute();
