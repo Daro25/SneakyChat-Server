@@ -29,7 +29,7 @@ if ($conex) {
     if ($id_sala !== null && $id_sala !== false) {
         $tablasArray = [];
 
-        $stmt1 = $conex->prepare("SELECT Id_Usuario FROM sala_usuario WHERE Id_Sala = ?");
+        $stmt1 = $conex->prepare("SELECT Id_Usuario FROM `sala-usuario` WHERE Id_Sala = ?");
         $stmt1->bind_param("i", $id_sala);
         $stmt1->execute();
         $result1 = $stmt1->get_result();
