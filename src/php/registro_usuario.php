@@ -4,7 +4,6 @@ header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-
 class Respuesta {
     public $res;
     function __construct($res) {
@@ -12,40 +11,45 @@ class Respuesta {
     }
 }
 
-$user = 'droa';
 $server = 'localhost';
-$database = 'mensajer_a';
+$user = 'droa';
 $password = 'droaPluving$1';
+$database = 'mensajer_a';
 
 $conex = mysqli_connect($server, $user, $password, $database);
 
-if ($conex->connect_error) {
-    echo json_encode(['resultado' => "La conexión a la base de datos falló: " . $conex->connect_error]);
+if (!$conex) {
+    echo json_encode(['resultado' => "La conexión a la base de datos falló: " . mysqli_connect_error()]);
     exit();
 }
 
-$nomb = $_GET['nomb']; 
-$contra = $_GET['contra']; 
-$sala_id = (int)$_GET['sala_id']; // Asegúrate de convertir a entero
-$edad = (int)$_GET['edad']; // Asegúrate de convertir a entero
-$key = $_GET['key'];
+// Obtener y sanitizar inputs
+$nomb = filter_input(INPUT_GET, 'nomb', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$contra = filter_input(INPUT_GET, 'contra', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$key = filter_input(INPUT_GET, 'key', FILTER_SANITIZE_STRING);
+$sala_id = filter_input(INPUT_GET, 'sala_id', FILTER_VALIDATE_INT);
+$edad = filter_input(INPUT_GET, 'edad', FILTER_VALIDATE_INT);
 $keyHash = password_hash($key, PASSWORD_DEFAULT);
 
-// Validar los campos
-if (empty($nomb) || empty($contra) || empty($key) || !is_int($sala_id) || !is_int($edad)) {
-    echo json_encode(['resultado' => "Todos los campos son obligatorios y sala_id y edad deben ser números."]);
+// Validar campos
+if (!$nomb || !$contra || !$key || $sala_id === false || $edad === false) {
+    echo json_encode(['resultado' => "Todos los campos son obligatorios y sala_id y edad deben ser números válidos."]);
     exit();
 }
 
-// Preparar la consulta SQL
+// Insertar nuevo usuario
 $stmt = $conex->prepare("INSERT INTO usuario (nomb, contra, Edad, keyPublic) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("ssss", $nomb, $contra, $edad, $keyHash); // 'ssiss' indica tipos de datos: string, string, integer, integer, string
+$stmt->bind_param("ssis", $nomb, $contra, $edad, $keyHash);
 
 if ($stmt->execute()) {
     $id = $conex->insert_id;
-    $stmt = $conex->prepare('INSERT INTO `sala-usuario` (Id_Sala, Id_Usuario) VALUES (?,?)');
-    $stmt->bind_param('i,i', $sala_id, $id);
+
+    // Relación con sala
+    $stmt->close();
+    $stmt = $conex->prepare('INSERT INTO `sala-usuario` (Id_Sala, Id_Usuario) VALUES (?, ?)');
+    $stmt->bind_param("ii", $sala_id, $id);
     $stmt->execute();
+
     echo json_encode(['ID' => $id]);
 } else {
     echo json_encode(['resultado' => "Error al insertar el registro: " . $stmt->error]);
