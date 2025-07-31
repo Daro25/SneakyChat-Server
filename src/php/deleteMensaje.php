@@ -16,13 +16,13 @@ if($conex) {
     if ($mensajeId !== 0) {
         
         $stmt = $conex->prepare("DELETE FROM mensaje WHERE Id = ?");
-        $stmt->bind_param("i", $mensajeId);
+        $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
             echo 'El mensaje fue eliminado exitosamente.';
         } else {
-            echo 'No se encontró ningún mensaje.'+$mensajeId;
+            echo 'No se encontró ningún mensaje.'+$_GET['id'];
         }
 
         $stmt->close();
