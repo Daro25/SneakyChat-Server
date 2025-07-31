@@ -29,7 +29,7 @@ $contra = filter_input(INPUT_GET, 'contra', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $key = filter_input(INPUT_GET, 'key', FILTER_SANITIZE_STRING);
 $sala_id = filter_input(INPUT_GET, 'sala_id', FILTER_VALIDATE_INT);
 $edad = filter_input(INPUT_GET, 'edad', FILTER_VALIDATE_INT);
-$keyHash = password_hash($key, PASSWORD_DEFAULT);
+$keyHash = password_hash($contra, PASSWORD_DEFAULT);
 
 // Validar campos
 if (!$nomb || !$contra || !$key || $sala_id === false || $edad === false) {
@@ -39,7 +39,7 @@ if (!$nomb || !$contra || !$key || $sala_id === false || $edad === false) {
 
 // Insertar nuevo usuario
 $stmt = $conex->prepare("INSERT INTO usuario (nomb, contra, Edad, keyPublic) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("ssis", $nomb, $contra, $edad, $keyHash);
+$stmt->bind_param("ssis", $nomb, $keyHash, $edad, $key);
 
 if ($stmt->execute()) {
     $id = $conex->insert_id;
