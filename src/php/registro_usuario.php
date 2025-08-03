@@ -53,6 +53,7 @@ if ($stmt->execute()) {
     echo json_encode(['ID' => $id]);
 } else {
     echo json_encode(['resultado' => "Error al insertar el registro: " . $stmt->error]);
+    error_log("Error al insertar el registro: " . $stmt->error);
 }
 
 $stmt->close();
