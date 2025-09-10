@@ -38,7 +38,7 @@ if (!$nomb || !$contra || !$key || $sala_id === false || $edad === false) {
 }
 
 // Insertar nuevo usuario
-$stmt = $conex->prepare("INSERT INTO usuario (nomb, contra, Edad, keyPublic) VALUES (?, ?, ?, ?)");
+$stmt = $conex->prepare("INSERT INTO usuario (Id_User, Nomb, Contra, Edad, keyPublic) VALUES (null,?, ?, ?, ?)");
 $stmt->bind_param("ssis", $nomb, $keyHash, $edad, $key);
 
 if ($stmt->execute()) {
@@ -46,7 +46,7 @@ if ($stmt->execute()) {
 
     // Relación con sala
     $stmt->close();
-    $stmt = $conex->prepare('INSERT INTO `sala-usuario` (Id_Sala, Id_Usuario) VALUES (?, ?)');
+    $stmt = $conex->prepare('INSERT INTO `sala-usuario` (Id, Id_Sala, Id_Usuario) VALUES (null, ?, ?)');
     $stmt->bind_param("ii", $sala_id, $id);
     $stmt->execute();
 
